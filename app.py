@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output
 import numpy as np
 import plotly.graph_objs as go
 
-data = pd.read_csv('data\price_RSV2.csv')
+data = pd.read_csv('./data/price_RSV2.CSV')
 del data['Unnamed: 0']
 data['StationCode'] = data['GTPName'].apply(lambda s: s[0:6])
 data['TG'] = np.select([data['TG'] == 0, data['TG'] != 0],[.0001, data['TG']])
@@ -111,4 +111,4 @@ def updet_figure(station):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
