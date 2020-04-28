@@ -6,15 +6,10 @@ from dash.dependencies import Input, Output
 import numpy as np
 import plotly.graph_objs as go
 
-
-
 data = pd.read_csv('data\price_RSV2.csv')
 del data['Unnamed: 0']
 data['StationCode'] = data['GTPName'].apply(lambda s: s[0:6])
-data['TG'] = np.select(
-    [data['TG'] == 0, 
-    data['TG'] != 0],
-    [.0001, data['TG']])
+data['TG'] = np.select([data['TG'] == 0, data['TG'] != 0],[.0001, data['TG']])
 data['RSV_Price'] = np.select([data['RSV_Price'] == 0, data['RSV_Price'] != 0],[data['AVG_Price'], data['RSV_Price']])
 data['Cost'] = data['TG'] * data['RSV_Price']
 
@@ -28,27 +23,26 @@ trace_ad = go.Scatter(x=list(data_d_ad['Hour']),
                       line=dict(color='#1B1BEB'))
 
 dic_station = {
-    'GKIRGR': 'Киришская ГРЭС',
-    'GVOLOG': 'Череповецская ГРЭС',
-    'GPSKOG': 'Псковская ГРЭС',
-    'GRYAZG': 'Рязанская ГРЭС',
-    'GNCHEG': 'Новочеркасская ГРЭС',
-    'GSTAGR': 'Ставропольская ГРЭС',
-    'GADLER': 'Адлерская ТЭС',
-    'GCHECH': 'Грозненская ТЭС',
-    'GSVERD': 'Серовская ГРЭС',
-    'GTROIG': 'Троицкая ГРЭС',
-    'GTUMEN': 'Сургутская ГРЭС',
-    'GKRASG': 'Красноярская ГРЭС-2'
-    }
+'GKIRGR': 'Киришская ГРЭС',
+'GVOLOG': 'Череповецская ГРЭС',
+'GPSKOG': 'Псковская ГРЭС',
+'GRYAZG': 'Рязанская ГРЭС',
+'GNCHEG': 'Новочеркасская ГРЭС',
+'GSTAGR': 'Ставропольская ГРЭС',
+'GADLER': 'Адлерская ТЭС',
+'GCHECH': 'Грозненская ТЭС',
+'GSVERD': 'Серовская ГРЭС',
+'GTROIG': 'Троицкая ГРЭС',
+'GTUMEN': 'Сургутская ГРЭС',
+'GKRASG': 'Красноярская ГРЭС-2'
+}
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-server = app.server
-
 app.layout = html.Div([
+
     html.Div([
         html.H2('Цена РСВ'),
         html.Img(src='/assets/Logo OGK-2.png')
@@ -78,7 +72,10 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(
                 id='graph_rsv_hours',
-                figure={'data': [trace_ad]}
+                figure={
+                    'data': [trace_ad]
+                }
+
             )
 
         ], className='six columns'),
