@@ -46,8 +46,9 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-app.layout = html.Div([
+server = app.server
 
+app.layout = html.Div([
     html.Div([
         html.H2('Цена РСВ'),
         html.Img(src='/assets/Logo OGK-2.png')
@@ -77,9 +78,7 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(
                 id='graph_rsv_hours',
-                figure={
-                    'data': [trace_ad]
-                }
+                figure={'data': [trace_ad]}
             )
 
         ], className='six columns'),
@@ -115,4 +114,4 @@ def updet_figure(station):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
