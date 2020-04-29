@@ -3,6 +3,8 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+#put in a separate module all part with pandas and numpy
+#rewrite with clear names
 import pandas as pd
 from dash.dependencies import Input, Output
 import numpy as np
@@ -25,18 +27,18 @@ trace_ad = go.Scatter(x=list(data_d_ad['Hour']),
                       line=dict(color='#1B1BEB'))
 
 dic_station = {
-'GKIRGR': 'Киришская ГРЭС',
-'GVOLOG': 'Череповецская ГРЭС',
-'GPSKOG': 'Псковская ГРЭС',
-'GRYAZG': 'Рязанская ГРЭС',
-'GNCHEG': 'Новочеркасская ГРЭС',
-'GSTAGR': 'Ставропольская ГРЭС',
-'GADLER': 'Адлерская ТЭС',
-'GCHECH': 'Грозненская ТЭС',
-'GSVERD': 'Серовская ГРЭС',
-'GTROIG': 'Троицкая ГРЭС',
-'GTUMEN': 'Сургутская ГРЭС',
-'GKRASG': 'Красноярская ГРЭС-2'
+    'GKIRGR': 'Киришская ГРЭС',
+    'GVOLOG': 'Череповецская ГРЭС',
+    'GPSKOG': 'Псковская ГРЭС',
+    'GRYAZG': 'Рязанская ГРЭС',
+    'GNCHEG': 'Новочеркасская ГРЭС',
+    'GSTAGR': 'Ставропольская ГРЭС',
+    'GADLER': 'Адлерская ТЭС',
+    'GCHECH': 'Грозненская ТЭС',
+    'GSVERD': 'Серовская ГРЭС',
+    'GTROIG': 'Троицкая ГРЭС',
+    'GTUMEN': 'Сургутская ГРЭС',
+    'GKRASG': 'Красноярская ГРЭС-2'
 }
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
