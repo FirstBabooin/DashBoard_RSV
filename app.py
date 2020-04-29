@@ -16,10 +16,13 @@ data['Cost'] = data['TG'] * data['RSV_Price']
 data_d = data.groupby(['StationCode', 'Year', 'Month', 'Day', 'Hour'], as_index=False)['TG', 'Cost'].apply(np.sum).reset_index()
 data_d['Price'] = (data_d['Cost'] / data_d['TG']).round(2)
 
-data_d_ad = data_d[(data_d['StationCode'] == 'GADLER') & (data_d['Day'] == 1)]
+data_m = data.groupby(['StationCode', 'Year', 'Month', 'Day'], as_index=False)['TG', 'Cost'].apply(np.sum).reset_index()
+data_m['Price'] = (data_m['Cost'] / data_m['TG']).round(2)
 
-trace_ad = go.Scatter(x=list(data_d_ad['Hour']),
-                      y=list(data_d_ad['Price']),
+data_m_ad = data_m[data_m['StationCode'] == 'GADLER']
+
+trace_ad = go.Scatter(x=list(data_m_ad['Day']),
+                      y=list(data_m_ad['Price']),
                       line=dict(color='#1B1BEB'))
 
 dic_station = {
@@ -65,36 +68,92 @@ app.layout = html.Div([
                     {'label': 'Сургутская ГРЭС', 'value': 'GTUMEN'},
                     {'label': 'Красноярская ГРЭС-2', 'value': 'GKRASG'}
                 ],
-                value=['GKIRGR']
+                value=['GKIRGR', 'GVOLOG', 'GPSKOG', 'GRYAZG', 'GNCHEG', 'GSTAGR', 'GADLER', 'GCHECH', 'GSVERD', 'GTROIG', 'GTUMEN', 'GKRASG']
             ),
-        ], className='two columns'),
+        ], className='pretty_container four columns'),
 
         html.Div([
-            dcc.Graph(
-                id='graph_rsv_hours',
-                figure={
-                    'data': [trace_ad]
-                }
-
-            )
-
-        ], className='six columns'),
+            html.Div([
+                html.H6('Цена на электроэнергию по суткам')
+            ]),
+            html.Div([
+                dcc.Graph(
+                    id='graph_rsv_days'
+                )
+            ]),
+            html.Div([
+                html.Label('Выбор суток'),
+                dcc.Slider(
+                    id='days-slider',
+                    min=data_m['Day'].min(),
+                    max=data_m['Day'].max(),
+                    value=data_m['Day'].max(),
+                    marks={str(days): str(days) for days in data_m['Day'].unique()}
+                )
+            ], className='slider'),
+            html.Div([
+                html.H6('Цена на электроэнергию по часам')
+            ]),
+            html.Div([
+                dcc.Graph(
+                    id='graph_rsv_hours'
+                )
+            ])
+        ], className='pretty_container eight columns'),
 
     ], className={'columnCount': 2})
 ])
 
+#Построение графика по суткам
 @app.callback(
-    Output('graph_rsv_hours', 'figure'),
+    Output('graph_rsv_days', 'figure'),
     [Input('list_station', 'value')]
 )
 
 def updet_figure(station):
-    tracers = []
+    station_day = []
     for i in np.array(station):
-        tracers.append(
+        station_day.append(
             dict(
-                x = data_d[(data_d['StationCode'] == i) & (data_d['Day'] == 1)]['Hour'],
-                y = data_d[(data_d['StationCode'] == i) & (data_d['Day'] == 1)]['Price'],
+                x = data_m[data_m['StationCode'] == i]['Day'],
+                y = data_m[data_m['StationCode'] == i]['Price'],
+                mode='lines+markers',
+                line=dict(width=3),
+                name=dic_station[i]
+            )
+        )
+
+    return {
+        'data': station_day,
+        'layout': dict(
+            xaxis=dict(title='Часы',
+                       showgrid=True,
+                       howline=True, linewidth=2, linecolor='black',
+                       range=[1, data_m['Day'].max()], nticks=data_m['Day'].max()
+                       ),
+            yaxis=dict(title='Цена РСВ',
+                       showgrid=True,
+                       showline=True, linewidth=2, linecolor='black'
+                       ),
+            margin={'l': 80, 'b': 40, 't': 5, 'r': 10},
+            legend={'x': 0, 'y': 1.15, 'orientation': 'h', 'yanchor': 'top'},
+        )
+    }
+
+#Построение графика по часам
+@app.callback(
+    Output('graph_rsv_hours', 'figure'),
+    [Input('list_station', 'value'),
+     Input('days-slider', 'value')]
+)
+
+def updet_figure(station, days):
+    station_hours = []
+    for i in np.array(station):
+        station_hours.append(
+            dict(
+                x = data_d[(data_d['StationCode'] == i) & (data_d['Day'] == days)]['Hour'],
+                y = data_d[(data_d['StationCode'] == i) & (data_d['Day'] == days)]['Price'],
                 mode='lines',
                 line=dict(shape="spline", smoothing=2, width=3),
                 name=dic_station[i]
@@ -102,10 +161,19 @@ def updet_figure(station):
         )
 
     return {
-        'data': tracers,
+        'data': station_hours,
         'layout': dict(
-            xaxis={'title': 'Часы'},
-            yaxis={'title': 'Цена РСВ'}
+            xaxis=dict(title='Часы',
+                       showgrid=True,
+                       howline=True, linewidth=2, linecolor='black',
+                       range=[0, 23], nticks=24
+                       ),
+            yaxis=dict(title='Цена РСВ',
+                       showgrid=True,
+                       showline=True, linewidth=2, linecolor='black'
+                       ),
+            margin={'l': 80, 'b': 40, 't': 5, 'r': 10},
+            legend={'x': 0, 'y': 1.15, 'orientation': 'h', 'yanchor': 'top'},
         )
     }
 
