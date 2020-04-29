@@ -1,12 +1,16 @@
+
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+#put in a separate module all part with pandas and numpy
+#rewrite with clear names
 import pandas as pd
 from dash.dependencies import Input, Output
 import numpy as np
 import plotly.graph_objs as go
 
-data = pd.read_csv('data\price_RSV2.csv')
+data = pd.read_csv('./data/price_RSV2.CSV')
 del data['Unnamed: 0']
 data['StationCode'] = data['GTPName'].apply(lambda s: s[0:6])
 data['TG'] = np.select([data['TG'] == 0, data['TG'] != 0],[.0001, data['TG']])
@@ -26,23 +30,25 @@ trace_ad = go.Scatter(x=list(data_m_ad['Day']),
                       line=dict(color='#1B1BEB'))
 
 dic_station = {
-'GKIRGR': 'Киришская ГРЭС',
-'GVOLOG': 'Череповецская ГРЭС',
-'GPSKOG': 'Псковская ГРЭС',
-'GRYAZG': 'Рязанская ГРЭС',
-'GNCHEG': 'Новочеркасская ГРЭС',
-'GSTAGR': 'Ставропольская ГРЭС',
-'GADLER': 'Адлерская ТЭС',
-'GCHECH': 'Грозненская ТЭС',
-'GSVERD': 'Серовская ГРЭС',
-'GTROIG': 'Троицкая ГРЭС',
-'GTUMEN': 'Сургутская ГРЭС',
-'GKRASG': 'Красноярская ГРЭС-2'
+    'GKIRGR': 'Киришская ГРЭС',
+    'GVOLOG': 'Череповецская ГРЭС',
+    'GPSKOG': 'Псковская ГРЭС',
+    'GRYAZG': 'Рязанская ГРЭС',
+    'GNCHEG': 'Новочеркасская ГРЭС',
+    'GSTAGR': 'Ставропольская ГРЭС',
+    'GADLER': 'Адлерская ТЭС',
+    'GCHECH': 'Грозненская ТЭС',
+    'GSVERD': 'Серовская ГРЭС',
+    'GTROIG': 'Троицкая ГРЭС',
+    'GTUMEN': 'Сургутская ГРЭС',
+    'GKRASG': 'Красноярская ГРЭС-2'
 }
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+server = app.server
 
 app.layout = html.Div([
 

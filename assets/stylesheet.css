@@ -8,7 +8,7 @@
 
 .banner h2{
     color: black;
-    padding-top: 10px;
+    padding-top: 15px;
     margin-left: 2%;
     display: inline-block;
 }
@@ -16,8 +16,8 @@
 .banner Img{
     position: relative;
     float: right;
-    right: 10Px;
-    height 75px;
+    right: 10px;
+    height: 75px;
 }
 
 .pretty_container {
