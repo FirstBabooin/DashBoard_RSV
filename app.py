@@ -82,14 +82,14 @@ app.layout = html.Div([
                 )
             ]),
             html.Div([
-                html.Label('Выбор суток'),
                 dcc.Slider(
                     id='days-slider',
                     min=data_m['Day'].min(),
                     max=data_m['Day'].max(),
                     value=data_m['Day'].max(),
                     marks={str(days): str(days) for days in data_m['Day'].unique()}
-                )
+                ),
+                html.Label('Выбор суток')
             ], className='slider'),
             html.Div([
                 html.H6('Цена на электроэнергию по часам')
@@ -126,16 +126,16 @@ def updet_figure(station):
     return {
         'data': station_day,
         'layout': dict(
-            xaxis=dict(title='Часы',
-                       showgrid=True,
-                       howline=True, linewidth=2, linecolor='black',
+            xaxis=dict(showgrid=True,
+                       showticklabels=False,
+                       showline=True, linewidth=2, linecolor='black',
                        range=[1, data_m['Day'].max()], nticks=data_m['Day'].max()
                        ),
             yaxis=dict(title='Цена РСВ',
                        showgrid=True,
                        showline=True, linewidth=2, linecolor='black'
                        ),
-            margin={'l': 80, 'b': 40, 't': 5, 'r': 10},
+            margin={'l': 82, 'b': 0, 't': 5, 'r': 25},
             legend={'x': 0, 'y': 1.15, 'orientation': 'h', 'yanchor': 'top'},
         )
     }
