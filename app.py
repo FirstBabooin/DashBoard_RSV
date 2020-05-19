@@ -45,13 +45,12 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-
-    html.Div([
-        html.H2('Цена РСВ'),
-        html.Img(src='/assets/Logo OGK-2.png')
-    ], className='banner'),
-    html.Div([
-        html.Div([
+    html.Link(
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap",
+    rel="stylesheet"
+    ),
+    html.Div([ #wrapper
+        html.Div([ #menu
             dcc.Checklist(
                 id='list_station',
                 options=[
@@ -68,46 +67,80 @@ app.layout = html.Div([
                     {'label': 'Сургутская ГРЭС', 'value': 'GTUMEN'},
                     {'label': 'Красноярская ГРЭС-2', 'value': 'GKRASG'}
                 ],
-                value=['GKIRGR', 'GVOLOG', 'GPSKOG', 'GRYAZG', 'GNCHEG', 'GSTAGR', 'GADLER', 'GCHECH', 'GSVERD', 'GTROIG', 'GTUMEN', 'GKRASG']
+                value=['GKIRGR', 'GVOLOG', 'GPSKOG', 'GRYAZG', 'GNCHEG', 'GSTAGR', 'GADLER', 'GCHECH', 'GSVERD', 'GTROIG', 'GTUMEN', 'GKRASG'],
+                className='checklist_station',
+                inputClassName='input_station',
+                labelClassName='label_station',
             ),
-        ], className='pretty_container four columns'),
+                # html.Div([
+                #     dcc.Input(id="list_station1", type="checkbox", placeholder="", value="GKIRGR", className="input_test", style={'display': 'none'}),
+                #     html.Label('Киришская ГРЭС', htmlFor="list_station1", className="label_test"),
+                # ], className='checkbox_test'),
+                # html.Div([
+                #     dcc.Input(id="list_station2", type="checkbox", placeholder="", value="GVOLOG", className="input_test", style={'display': 'none'}),
+                #     html.Label('Череповецская ГРЭС', htmlFor="list_station2", className="label_test"),
+                # ], className='checkbox_test'),
+                # html.Div([
+                #     dcc.Input(id="list_station3", type="checkbox", placeholder="", value="GVOLOG", className="input_test", style={'display': 'none'}),
+                #     html.Label('Псковская ГРЭС', htmlFor="list_station3", className="label_test"),
+                # ], className='checkbox_test'),
+        ], className='menu'),
 
-        html.Div([
-            html.Div([
-                html.H6('Цена на электроэнергию по суткам')
-            ]),
-            html.Div([
-                dcc.Graph(
-                    id='graph_rsv_days'
-                )
-            ]),
-            html.Div([
-                dcc.Slider(
-                    id='days-slider',
-                    min=data_m['Day'].min(),
-                    max=data_m['Day'].max(),
-                    value=data_m['Day'].max(),
-                    marks={str(days): str(days) for days in data_m['Day'].unique()}
-                ),
-                html.Label('Выбор суток')
-            ], className='slider'),
-            html.Div([
-                html.H6('Цена на электроэнергию по часам')
-            ]),
-            html.Div([
-                dcc.Graph(
-                    id='graph_rsv_hours'
-                )
-            ])
-        ], className='pretty_container eight columns'),
+        html.Div([ #section
+            html.Div([ #banner
+                html.Div([ #conteiner
+                    html.Div([
+                        html.H2('Цена РСВ'),
+                    ], className='title'),
+                    html.Div([
+                        html.Img(src='/assets/LogoOGK-2w.png')
+                    ], className='logo')
+                ], className='conteiner'),
+            ], className='banner'),
 
-    ], className={'columnCount': 2})
-])
+            html.Div([ #content
+                html.Div([ #blog (1)
+                    html.Div([
+                        html.H6('Цена на электроэнергию по суткам', className='graphic_title')
+                    ], className="graphic_title_div"),
+                    html.Div([
+                        dcc.Graph(
+                            id='graph_rsv_days',
+                            className='graphic'
+                        )
+                    ]),
+                    html.Div([
+                        dcc.Slider(
+                            id='days-slider',
+                            min=data_m['Day'].min(),
+                            max=data_m['Day'].max(),
+                            value=data_m['Day'].max(),
+                            marks={str(days): str(days) for days in data_m['Day'].unique()}
+                        ),
+                        html.Label('Выбор суток', className="slider_text")
+                    ], className='slider'),
+                ], className='blog'),
+
+                html.Div([ #blog (2)
+                    html.Div([
+                        html.H6('Цена на электроэнергию по часам', className='graphic_title')
+                    ], className="graphic_title_div"),
+                    html.Div([
+                        dcc.Graph(
+                            id='graph_rsv_hours',
+                            className='graphic'
+                        )
+                    ])
+                ], className='blog'),
+            ], className='content'),
+        ], className='section'),
+    ], className='wrapper')
+]) #app.layout
 
 #Построение графика по суткам
 @app.callback(
     Output('graph_rsv_days', 'figure'),
-    [Input('list_station', 'value')]
+    [Input('list_station', 'value'),]
 )
 
 def updet_figure(station):

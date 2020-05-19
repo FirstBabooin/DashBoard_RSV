@@ -1,44 +1,129 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+  height: 100vh;
+  background-color: #f5f8fd;
+}
+/*Меню*/
+.menu {
+  background-color: #224373;
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+}
+.checklist_station {
+  margin: 235px 15px 100px 15px;
+}
+.label_station {
+  padding-left: 5px;
+}
+/*ОСНОВНАЯ ЧАСТЬ*/
+.section {
+  display: block;
+}
+/*Шапка сайта*/
 .banner {
-    height: 80px;
-    margin: 10px 10px 10px;
-    margin-right: 10px;
-    background-color: rgb(66, 196, 247);
-    border-radius: 10px;
+  height: 80px;
+  padding: 8px;
+  background-color: rgb(0, 121, 194);
 }
-
-.banner h2{
-    color: black;
-    padding-top: 10px;
-    margin-left: 2%;
-    display: inline-block;
+.conteiner {
+  width: 100%;
+  max-width: 1600px;
+  height: 80px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
 }
-
-.banner Img{
-    position: relative;
-    float: right;
-    right: 10Px;
-    height 75px;
+.title H2{
+  font-family: 'Roboto', sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  color: #fff;
 }
-
-.pretty_container {
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin: 10px;
-  margin-left: 10px;
-  padding: 15px;
+/*Область с графиками*/
+.content {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f5f8fd;
+}
+.blog {
+  display: block;
+  width: 50%;
+  margin: 60px 10px;
+  text-align: center;
+  background-color: #fff;
+}
+.graphic {
+  width: 100%;
+  height: 550px;
+  text-align: center;
+}
+.graphic_title_div {
   position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
+  justify-content: center;
+  display: flex;
+  height: 50px;
+  top: 15px;
+  margin-bottom: 20px;
 }
-
-.four.columns {
-    width: 17%;
+.graphic_title_div:before {
+  content: '';
+  display: block;
+  top: 40%;
+  left: 10%;
+  width:80%;
+  height: 3px;
+  background-color: #9fa3b6;
+  position: absolute;
+  z-index: 0;
 }
-
-.eight.columns {
-        width: 79%;
+.graphic_title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  color: #224373;
+  text-align: center;
+  background-color: #fff;
+  padding: 0 15px;
+  margin-top:0;
+  z-index: 99;
 }
-
 .slider {
-    margin-left: 60px;
-    margin-right: 0px
+    margin: 20px 0 30px 60px;
+}
+.slider_text {
+  margin: 10px;
+}
+
+/*Test.Стиль */
+.checkbox_test {
+  display: flex;
+}
+.input_test {
+  display: none;
+}
+.label_test {
+  padding-left: 30px;
+  font-family: 'Roboto', sans-serif;
+}
+.label_test::before {
+   content: '';
+   display: inline-block;
+   vertical-align: middle;
+   width: 18px;
+   height: 18px;
+   margin-left: -10px;
+   margin-right: 10px;
+   border-radius: 50%;
+   background-color: #fff;
+
+   transition: background-color .8s liner;
+}
+.input_test:checked + .label_test::before{
+  background-image: url(../assets/ok.svg);
+  background-size: 100%;
+  width: 18px;
+  height: 18px;
+}
+.input_test:checked + .label_test {
+  color: #6cb7f3;
 }
